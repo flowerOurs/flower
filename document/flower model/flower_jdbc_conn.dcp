@@ -1,0 +1,11 @@
+[ConnectionProfile]
+ConnectionType=JDBC
+Dbms=MySQL
+Description=flower jdbc connection profile for mysql
+DisableBind=0
+Driver=com.mysql.jdbc.Driver
+JarFiles=mysql-connector-java-3.1.x-bin.jar
+LogId=root
+LogPassword=root
+TrimSpaces=0
+URL=jdbc:mysql://localhost:3306/flower

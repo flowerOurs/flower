@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+	<!-- XMemcachedClientBuilder have two arguments.First is server list,and 
+		second is weights array. -->
+	<bean name="memcachedClientBuilder" class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
+		<constructor-arg>
+			<list>
+				<bean class="java.net.InetSocketAddress">
+					<constructor-arg>
+						<value>#{props['memcached.server1']}</value>
+					</constructor-arg>
+					<constructor-arg>
+						<value>#{props['memcached.port1']}</value>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
+		<constructor-arg>
+			<list>
+				<value>#{props['memcached.weight1']}</value>
+			</list>
+		</constructor-arg>
+		<!-- 
+		<property name="authInfoMap">
+			<map>
+				<entry key-ref="server1">
+					<bean class="net.rubyeye.xmemcached.auth.AuthInfo"
+						factory-method="typical">
+						<constructor-arg index="0">
+							<value>cacheuser</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>123456</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+			</map>
+		</property>
+		 -->
+		<property name="connectionPoolSize" value="#{props['memcached.connectionPoolSize']}"></property>
+		<property name="commandFactory">
+			<bean class="net.rubyeye.xmemcached.command.TextCommandFactory"></bean>
+		</property>
+		<property name="sessionLocator">
+			<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>
+		</property>
+		<property name="transcoder">
+			<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
+		</property>
+	</bean>
+	<!-- Use factory bean to build memcached client -->
+	<bean name="memcachedClient" factory-bean="memcachedClientBuilder"
+		factory-method="build" destroy-method="shutdown" />
+
+
+</beans>

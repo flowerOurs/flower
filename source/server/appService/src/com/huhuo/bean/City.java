@@ -5,7 +5,7 @@ public class City extends EntityBean {
 	private static final long serialVersionUID = -6822805495823797019L;
 
 	private String city;
-	
+	// 二次更新
 	private String province;
 	
 	private Integer pid;

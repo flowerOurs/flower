@@ -1,7 +1,7 @@
 package com.huhuo.bean;
 
 /**
- * wuyuxuan is huhuo
+ * ggg
  * @author xiejc
  *
  */

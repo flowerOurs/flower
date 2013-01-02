@@ -1,5 +1,10 @@
 package com.huhuo.bean;
 
+/**
+ * i am huhuo xuan
+ * @author xiejc
+ *
+ */
 public class City extends EntityBean {
 
 	private static final long serialVersionUID = -6822805495823797019L;

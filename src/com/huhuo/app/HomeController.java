@@ -38,6 +38,11 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
+		
+		/********* branch test *************/
+		// first branch for test
+		
+		
 		return "home";
 	}
 	

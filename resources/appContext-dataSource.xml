@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd ">
+	
+	<!-- c3p0数据源 -->
+	<bean id="c3p0datasourceOperation" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="#{props['jdbc.driverclass']}" />
+		<property name="jdbcUrl" value="#{props['jdbc.url.operation']}" />
+		<property name="user" value="#{props['jdbc.username.operation']}" />
+		<property name="password" value="#{props['jdbc.password.operation']}" />
+
+		<property name="maxPoolSize" value="#{props['c3p0.pool.size.max']}" />
+		<property name="minPoolSize" value="#{props['c3p0.pool.size.min']}" />
+		<property name="initialPoolSize" value="#{props['c3p0.pool.size.ini']}" />
+		<property name="acquireIncrement" value="#{props['c3p0.pool.size.increment']}" />
+	</bean>
+	<bean id="c3p0datasourceData" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="#{props['jdbc.driverclass']}" />
+		<property name="jdbcUrl" value="#{props['jdbc.url.data']}" />
+		<property name="user" value="#{props['jdbc.username.data']}" />
+		<property name="password" value="#{props['jdbc.password.data']}" />
+
+		<property name="maxPoolSize" value="#{props['c3p0.pool.size.max']}" />
+		<property name="minPoolSize" value="#{props['c3p0.pool.size.min']}" />
+		<property name="initialPoolSize" value="#{props['c3p0.pool.size.ini']}" />
+		<property name="acquireIncrement" value="#{props['c3p0.pool.size.increment']}" />
+	</bean>
+	
+<!-- 	<bean id="abstrDBDao" class="com.huhuo.dao.AbstrDBDao">
+		<property name="dataSource" ref="c3p0datasourceData"></property>
+	</bean> -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="c3p0datasourceData"></property>
+	</bean>
+	
+	<!-- 事务（只能有一个事务管理源，即只有transactionManagerOperation有效，要多数据源事务管理，需要使用JNDI+GlassFish+JTA） -->
+	<bean id="transactionManagerOperation"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="c3p0datasourceOperation" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManagerOperation"/>
+	<!-- 基于注解的扫描 -->
+	<context:annotation-config></context:annotation-config>
+	<context:component-scan base-package="com.huhuo"></context:component-scan>
+	
+</beans>
